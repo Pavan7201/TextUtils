@@ -62,21 +62,21 @@ export default function TextForm(props) {
         <button
           type="button"
           onClick={handleUpClick}
-          className="btn btn-primary mx-1 my-3"
+          className="btn btn-primary my-2"
         >
           Convert to Uppercase
         </button>
         <button
           type="button"
           onClick={handleloClick}
-          className="btn btn-primary mx-1"
+          className="btn btn-primary my-1"
         >
           Convert to Lowercase
         </button>
         <button
           type="button"
           onClick={handleCopy}
-          className="btn btn-primary mx-1"
+          className="btn btn-primary my-1"
         >
           <img src={copyImage} alt="Copy" width="20" className="mx-1" />
           Copy Text
@@ -84,14 +84,14 @@ export default function TextForm(props) {
         <button
           type="button"
           onClick={handleClearText}
-          className="btn btn-primary mx-1"
+          className="btn btn-primary mx-2 my-1"
         >
           Clear Text
         </button>
         <button
           type="button"
           onClick={removeExtraSpaces}
-          className="btn btn-primary mx-1"
+          className="btn btn-primary my-1"
         >
           Remove space
         </button>
