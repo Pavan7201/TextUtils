@@ -1,8 +1,24 @@
 import React, { useState } from "react";
 
-import copyImage from "../assets/copy.png";
+// import copyImage from "../assets/copy.png";
 
 export default function TextForm(props) {
+  const [text, setText] = useState("");
+
+  const toPascalCase = (str) => {
+    return str
+      .trim()
+      .split(/[\s-_]+/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  const handleCamelCase = () => {
+    let newText = toPascalCase(text);
+    setText(newText);
+    props.showAlert("Converted to Camel Case.", "success");
+  };
+
   const handleUpClick = () => {
     let newText = text.toUpperCase();
     setText(newText);
@@ -18,8 +34,8 @@ export default function TextForm(props) {
   const handleCopy = () => {
     var text = document.getElementById("myBox");
     text.select();
-    text.setSelectionRange(0, 9999);
     navigator.clipboard.writeText(text.value);
+    document.getSelection().removeAllRanges();
     props.showAlert("Text has been Copied to clipboard.", "success");
   };
 
@@ -38,7 +54,6 @@ export default function TextForm(props) {
   const handleOnChange = (evt) => {
     setText(evt.target.value);
   };
-  const [text, setText] = useState("");
   return (
     <>
       <div
@@ -47,7 +62,7 @@ export default function TextForm(props) {
           color: props.mode === "light" ? "black" : "white",
         }}
       >
-        <h1>{props.heading}</h1>
+        <h1 className="mb-10">{props.heading}</h1>
         <textarea
           className="form-control"
           value={text}
@@ -57,43 +72,56 @@ export default function TextForm(props) {
           style={{
             backgroundColor: props.mode === "light" ? "white" : "#353935",
             color: props.mode === "light" ? "black" : "white",
+            textAlign: "justify",
           }}
         ></textarea>
+
         <button
-          type="button"
+          disabled={text.length === 0}
+          onClick={handleCamelCase}
+          className="btn btn-primary mx-1 my-1"
+        >
+          Convert to Camilcase
+        </button>
+
+        <button
+          disabled={text.length === 0}
           onClick={handleUpClick}
-          className="btn btn-primary my-2"
+          className="btn btn-primary mx-1 my-1"
         >
           Convert to Uppercase
         </button>
+
         <button
-          type="button"
+          disabled={text.length === 0}
           onClick={handleloClick}
-          className="btn btn-primary my-1"
+          className="btn btn-primary mx-1 my-1"
         >
           Convert to Lowercase
         </button>
+
         <button
-          type="button"
+          disabled={text.length === 0}
           onClick={handleCopy}
-          className="btn btn-primary my-1"
+          className="btn btn-primary mx-1 my-1"
         >
-          <img src={copyImage} alt="Copy" width="20" className="mx-1" />
           Copy Text
         </button>
+
         <button
-          type="button"
-          onClick={handleClearText}
-          className="btn btn-primary mx-2 my-1"
-        >
-          Clear Text
-        </button>
-        <button
-          type="button"
+          disabled={text.length === 0}
           onClick={removeExtraSpaces}
-          className="btn btn-primary my-1"
+          className="btn btn-primary mx-1 my-1"
         >
           Remove space
+        </button>
+
+        <button
+          disabled={text.length === 0}
+          onClick={handleClearText}
+          className="btn btn-primary mx-1 my-1"
+        >
+          Clear Text
         </button>
       </div>
       <div
@@ -104,14 +132,24 @@ export default function TextForm(props) {
       >
         <h1>Your Text Summary</h1>
         <p>
-          {text.split(" ").length} words & {text.length} characters
+          {
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length
+          }{" "}
+          words & {text.length} characters
         </p>
-        <p>Can be read in {0.008 * text.split(" ").length} min </p>
-        <h2>Preview</h2>
         <p>
-          {text.length > 0
-            ? text
-            : "Enter something in the above textbox to preview it here"}
+          Can be read in{" "}
+          {0.008 *
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length}{" "}
+          min{" "}
+        </p>
+        <h2>Preview</h2>
+        <p style={{ textAlign: "justify" }}>
+          {text.length > 0 ? text : "Nothing to Preview..."}
         </p>
       </div>
     </>
